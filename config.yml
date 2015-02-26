@@ -1,0 +1,10 @@
+# Supported: mysql, sqlite
+sql-type: sqlite
+# MySQL/SQLite
+database: portals
+table: Portals
+# MySQL only
+hostname: localhost
+port: 3306
+username: ''
+password: ''

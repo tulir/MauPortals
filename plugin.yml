@@ -1,0 +1,16 @@
+name: MauPortals
+author: Tulir293
+main: net.maunium.bukkit.MauPortals.MauPortals
+website: http://maunium.net
+version: 1.0
+depend: [MauBukLib]
+commands:
+  mauportals:
+    description: Main command
+    permission: mauportals.manage
+    permission-message: "§4[§cMauPortals§4]§c You do not have <permission>"
+    usage: "§4[§cMauPortals§4]§c Usage: /<command> <inspector/wand/create/remove> [-/-/x/id] [y] [z] [world]"
+    aliases: [portals, mauportal, portal, mp, p]
+permissions:
+  mauportals.manage:
+    default: OP
