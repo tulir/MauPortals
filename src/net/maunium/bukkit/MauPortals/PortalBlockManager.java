@@ -8,8 +8,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import net.maunium.bukkit.MauBukLib.MauUtils;
 import net.maunium.bukkit.MauPortals.API.PortalHandlerRegistry;
+import net.maunium.bukkit.Maussentials.Utils.SerializableLocation;
 
 public class PortalBlockManager {
 	public MauPortals plugin;
@@ -42,7 +42,7 @@ public class PortalBlockManager {
 					else continue;
 				}
 			} else {
-				target = MauUtils.parseLocation(targets);
+				target = SerializableLocation.fromString(targets).toLocation();
 				if (target == null) {
 					plugin.getLogger().severe("Could not parse target \"" + targets + "\" for portal #" + id);
 					pd.removeEntry(id);

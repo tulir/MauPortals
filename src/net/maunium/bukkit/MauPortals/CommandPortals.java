@@ -9,13 +9,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.MetadataValue;
 
-import net.maunium.bukkit.MauBukLib.IngameCommandExecutor;
-import net.maunium.bukkit.MauBukLib.MauUtils;
-import net.maunium.bukkit.MauPortals.API.PortalHandlerRegistry;
 import net.maunium.bukkit.MauPortals.API.PortalHandler;
+import net.maunium.bukkit.MauPortals.API.PortalHandlerRegistry;
 import net.maunium.bukkit.MauPortals.API.PortalManager;
+import net.maunium.bukkit.Maussentials.Utils.IngameCommandExecutor;
+import net.maunium.bukkit.Maussentials.Utils.MetadataUtils;
+import net.maunium.bukkit.Maussentials.Utils.SerializableLocation;
 
-public class CommandPortals extends IngameCommandExecutor {
+public class CommandPortals implements IngameCommandExecutor {
 	private MauPortals plugin;
 	
 	public CommandPortals(MauPortals plugin) {
@@ -40,8 +41,8 @@ public class CommandPortals extends IngameCommandExecutor {
 				p.getInventory().addItem(is);
 				return true;
 			} else if (args[0].equalsIgnoreCase("create")) {
-				MetadataValue c1mv = MauUtils.getMetadata(p, plugin.sel1_meta, plugin);
-				MetadataValue c2mv = MauUtils.getMetadata(p, plugin.sel2_meta, plugin);
+				MetadataValue c1mv = MetadataUtils.getMetadata(p, plugin.sel1_meta, plugin);
+				MetadataValue c2mv = MetadataUtils.getMetadata(p, plugin.sel2_meta, plugin);
 				
 				if (c1mv != null && c2mv != null && c1mv.value() instanceof Location && c2mv.value() instanceof Location) {
 					Location c1 = (Location) c1mv.value();
@@ -86,8 +87,9 @@ public class CommandPortals extends IngameCommandExecutor {
 							}
 						} else w = p.getLocation().getWorld();
 						
-						target = MauUtils.toString(new Location(w, x, y, z));
-					} else target = MauUtils.toString(p.getLocation());
+						;
+						target = new SerializableLocation(z, x, y, w).toString();
+					} else target = new SerializableLocation(p.getLocation()).toString();
 					int i = PortalManager.createPortal(c1, c2, target);
 					if (i != -1) p.sendMessage(plugin.stag + "Created portal with ID " + i);
 					else p.sendMessage(plugin.errtag + "Failed to create portal (See console)");

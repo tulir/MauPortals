@@ -11,8 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
-import net.maunium.bukkit.MauBukLib.MauUtils;
 import net.maunium.bukkit.MauPortals.API.PortalHandler;
+import net.maunium.bukkit.Maussentials.Utils.MetadataUtils;
+import net.maunium.bukkit.Maussentials.Utils.SerializableLocation;
 
 public class PlayerInteractListener implements Listener {
 	private MauPortals plugin;
@@ -34,16 +35,19 @@ public class PlayerInteractListener implements Listener {
 		
 		if (is.getItemMeta().getDisplayName().equals("MauPortal Wand")) {
 			evt.getPlayer().setMetadata(left ? plugin.sel1_meta : plugin.sel2_meta, new FixedMetadataValue(plugin, evt.getClickedBlock().getLocation()));
-			evt.getPlayer().sendMessage(plugin.stag + "Set corner " + (left ? 1 : 2) + " to " + MauUtils.toReadableString(evt.getClickedBlock().getLocation()));
+			evt.getPlayer().sendMessage(
+					plugin.stag + "Set corner " + (left ? 1 : 2) + " to " + new SerializableLocation(evt.getClickedBlock().getLocation()).toReadableString());
 			evt.setCancelled(true);
 		} else if (is.getItemMeta().getDisplayName().equals("MauPortal Inspector")) {
 			Block b = evt.getClickedBlock();
-			MetadataValue id = MauUtils.getMetadata(b, plugin.id_meta, plugin);
-			MetadataValue data = MauUtils.getMetadata(b, plugin.target_meta, plugin);
+			MetadataValue id = MetadataUtils.getMetadata(b, plugin.id_meta, plugin);
+			MetadataValue data = MetadataUtils.getMetadata(b, plugin.target_meta, plugin);
 			if (id != null && data != null && data.value() instanceof Location) {
 				evt.getPlayer().sendMessage(plugin.stag + "Portal #" + id.asInt() + " @ " + b.getX() + ", " + b.getY() + ", " + b.getZ());
-				if (data.value() instanceof Location) evt.getPlayer().sendMessage(ChatColor.GRAY + "Target: " + MauUtils.toReadableString((Location) data.value()));
-				else if (data.value() instanceof PortalHandler) evt.getPlayer().sendMessage(ChatColor.GRAY + "Handler: " + ((PortalHandler) data.value()).getName());
+				if (data.value() instanceof Location) evt.getPlayer().sendMessage(
+						ChatColor.GRAY + "Target: " + new SerializableLocation((Location) data.value()).toReadableString());
+				else if (data.value() instanceof PortalHandler)
+					evt.getPlayer().sendMessage(ChatColor.GRAY + "Handler: " + ((PortalHandler) data.value()).getName());
 			} else evt.getPlayer().sendMessage(plugin.errtag + "Not a MauPortal.");
 		}
 	}
